@@ -1,0 +1,1 @@
+'''Store all the routes for the api url'''
