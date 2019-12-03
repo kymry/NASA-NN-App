@@ -1,11 +1,16 @@
 from flask import Flask, jsonify, request, render_template
 import sqlite3, numpy as np, pickle
 
+''' This can be seen as the model, view and controller in an MVC framework (if only conceptually)
+    Model: the database connections and associated CRUD operations
+    View: is jinja3 templating engine which generates the HTML pages from the templates
+    Controller: initialization (of Flask), routing of the URLs, and execution (of db and the app)
+ '''
+
 # creates the Flask application object
 app = Flask(__name__)
+app.config.from_object('config')
 #model = pickle.load(open('TODO.pickle', 'rb'))
-app.config["DEBUG"] = True
-
 
 @app.route('/', methods=['GET'])
 def home():
