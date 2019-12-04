@@ -1,5 +1,10 @@
 from flask import Flask, jsonify, request, render_template
-import sqlite3, numpy as np, pickle
+import sqlite3
+import numpy as np
+import pickle
+import os
+import json
+from flask_pymongo import PyMongo
 
 ''' This can be seen as the model, view and controller in an MVC framework (if only conceptually)
     Model: the database connections and associated CRUD operations
