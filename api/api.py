@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 import os
 import json
-from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo  # uses MongoDb's Python client API internally
 
 ''' This can be seen as the model, view and controller in an MVC framework (if only conceptually)
     Model: the database connections and associated CRUD operations
@@ -15,13 +15,18 @@ from flask_pymongo import PyMongo
 # creates the Flask application object
 app = Flask(__name__)
 app.config.from_object('config')
+mongo = PyMongo(app)  # Flask object is sent as parameter to PyMango
 #model = pickle.load(open('TODO.pickle', 'rb'))
 
-@app.route('/', methods=['GET'])
+
+@app.route('/', methods=['GET', 'POST', 'DELETE', 'PATCH'])
 def home():
-    user = {'username': 'Kymry'}
-    # the render_template() function invokes the Jinja2 template engine (will convert to BootStrap instead)
-    return render_template('index.html', title='Home', user=user)
+
+    # pulls in one random document from MongoDB
+    json_obj = mongo.db.movie.find_one()
+
+    # invokes the Jinja2 template engine
+    return render_template('index.html', title='Home', json_display=json_obj["name"])
 
 '''
 @app.route('/api', methods=['POST'])
@@ -32,17 +37,6 @@ def predict():
     output = prediction[0]
     return jsonify(output)
 '''
-
-# sqllite connection example
-'''@app.route('/api/v1/resources/books/all', methods=['GET'])
-def api_all():
-    conn = sqlite3.connect('books.db')
-    
-    # this object moves through the database to pull the requested data
-    cur = conn.cursor()
-    all_books = cur.execute('SELECT * FROM books;').fetchall()
-
-    return jsonify(all_books)'''
 
 
 @app.errorhandler(404)

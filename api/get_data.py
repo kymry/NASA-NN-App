@@ -38,7 +38,6 @@ def get_solarflare_data(start_date, end_date):
         print("Can't access NASA solar flare API")
 
 
-
 def get_mars_data():
     ''' Queries the NASA mars weather API '''
     pass
