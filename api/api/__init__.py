@@ -1,5 +1,6 @@
 from flask import Flask, g
 from flask_pymongo import PyMongo
+import api.external_apis as nasa_api
 
 # Globally accessible libraries
 mongo = PyMongo()
@@ -25,5 +26,8 @@ def create_app():
 
         # ML models
         #model = pickle.load(open('TODO.pickle', 'rb'))
+
+        # update mars data
+        nasa_api.get_mars_data(mongo, 'solweather')
 
         return app

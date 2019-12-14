@@ -15,9 +15,9 @@
                    activeRegionNum, linkedEvents[(list of) activityID]
 '''
 
-
 import requests
 import json
+from collections import OrderedDict
 
 API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
 
@@ -39,30 +39,33 @@ def get_solarflare_data(start_date, end_date):
         print("Can't access NASA solar flare API")
 
 
-def get_mars_data():
-    ''' Queries the NASA mars weather API for the following data
-            Atmospheric temperature degrees celsius
-            Horizontal wind speed, metres per second
-            Atmospheric pressure, pascals
-    '''
+def get_mars_data(db, collection):
+    """ Queries the NASA mars weather API for the following data and updates db
+
+        -- Atmospheric temperature degrees celsius
+        -- Horizontal wind speed, metres per second
+        -- Atmospheric pressure, pascals
+
+        db: MongoDB object
+        collection: MongoDB collection """
 
     endpoint = "https://api.nasa.gov/insight_weather/?api_key=" + API_KEY + "&feedtype=json&ver=1.0"
-    data = requests.get(endpoint)
+    raw_output = requests.get(endpoint)
 
-    if data.ok:
-        output = json.loads(data.content)
+    if raw_output.ok:
+        # object_pairs_hook is needed to maintain the ordering
+        raw_output = json.loads(raw_output.content, object_pairs_hook=OrderedDict)
     else:
         pass
         # TODO raise exception and exit function
 
-    sol_keys = output["sol_keys"]
+    # process sol JSON objects
+    sols_data = []
+    for sol in raw_output["sol_keys"]:
+        sol_object = raw_output[sol]
+        sol_object['sol'] = sol
+        sol_object.move_to_end('sol', last=False)
+        sols_data.append(raw_output[sol])
 
-    # loop through each of the sols and update the database
-    for sol in sol_keys:
-        pass
-
-
-
-
-
-
+    print(type(sols_data[0]))
+    db.db[collection].insert_many(sols_data)
