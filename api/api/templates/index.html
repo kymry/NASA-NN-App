@@ -4,16 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-      {%  if title  %}
-      <title>{{ title }} - end of line club</title>
-      {% else %}
-      <title>Welcome to the end of the line club</title>
-      {% endif %}
-
-        {{ json_display }}
+      <title> End of the line club </title>
 
       <!-- Bootstrap CSS -->
-     <link href="/api/static/css/bootstrap.min.css" rel="stylesheet" />
+     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
 
   </head>
   <body>
@@ -35,12 +29,37 @@
       </ul>
     </nav>
 
+    {% if user %}
+          <h1> Welcome to the end of the line club, {{ user }} </h1>
+    {% endif %}
+
+    <h1>Choose a Date</h1>
+    <form action="" method="POST" novalidate>
+        {{  form.hidden_tag() }}
+        <p>
+            {{ form.date.label }}<br>
+            {{  form.date(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <!-- renders Flask 'flash' messages after a user submits a web form -->
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
       <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="/api/static/js/bootstrap.min.js"></script>
-    <script src="/api/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
 
   </body>
 </html>

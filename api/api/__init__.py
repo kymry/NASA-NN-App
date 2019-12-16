@@ -1,6 +1,7 @@
 from flask import Flask, g
 from flask_pymongo import PyMongo
 import api.external_apis as nasa_api
+import os
 
 # Globally accessible libraries
 mongo = PyMongo()
@@ -13,7 +14,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_mapping(
         DEBUG=True,  # Turns on debugging features in Flask
-        MONGO_URI="mongodb://127.0.0.1:27017/marsdata"  # Connects to MongoDB running on localhost on port 27017
+        MONGO_URI="mongodb://127.0.0.1:27017/marsdata",  # Connects to MongoDB running on localhost on port 27017
+        SECRET_KEY=os.environ.get('SECRET_KEY') or "H49J*dE#4kslf"
     )
 
     # Initialize plugins

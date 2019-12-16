@@ -67,5 +67,4 @@ def get_mars_data(db, collection):
         sol_object.move_to_end('sol', last=False)
         sols_data.append(raw_output[sol])
 
-    print(type(sols_data[0]))
     db.db[collection].insert_many(sols_data)
