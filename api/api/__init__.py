@@ -15,10 +15,13 @@ def create_app():
     app.config.from_mapping(
         DEBUG=True,  # Turns on debugging features in Flask
         MONGO_URI="mongodb://127.0.0.1:27017/marsdata",  # Connects to MongoDB running on localhost on port 27017
-        SECRET_KEY=os.environ.get('SECRET_KEY') or "H49J*dE#4kslf"
+        SECRET_KEY=os.environ.get('SECRET_KEY') or "H49J*dE#4kslf",
+        DATABASE="'/Users/kymryburwell/Google Drive/Code Repository/NASA ML API/api/databases/marsweather.sqlite3'"
     )
 
-    # Initialize plugins
+    # Initialize SQLite3 and MongoDB
+    from . import db
+    db.init_app(app)
     mongo.init_app(app)
 
     # register the front_end blueprint with the app (so that it can be accessed later)
@@ -30,6 +33,6 @@ def create_app():
         #model = pickle.load(open('TODO.pickle', 'rb'))
 
         # update mars data
-        nasa_api.get_mars_data(mongo, 'solweather')
+        nasa_api.get_mars_data(mongo)
 
         return app

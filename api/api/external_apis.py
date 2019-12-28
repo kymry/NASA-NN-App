@@ -39,13 +39,11 @@ def get_solarflare_data(start_date, end_date):
         print("Can't access NASA solar flare API")
 
 
-def get_mars_data(db, collection):
+def get_mars_data(db):
     """ Queries the NASA mars weather API for the following data and updates db
-
         -- Atmospheric temperature degrees celsius
         -- Horizontal wind speed, metres per second
         -- Atmospheric pressure, pascals
-
         db: MongoDB object
         collection: MongoDB collection """
 
@@ -56,8 +54,9 @@ def get_mars_data(db, collection):
         # object_pairs_hook is needed to maintain the ordering
         raw_output = json.loads(raw_output.content, object_pairs_hook=OrderedDict)
     else:
-        pass
         # TODO raise exception and exit function
+        pass
+
 
     # process sol JSON objects
     sols_data = []
@@ -67,4 +66,4 @@ def get_mars_data(db, collection):
         sol_object.move_to_end('sol', last=False)
         sols_data.append(raw_output[sol])
 
-    db.db[collection].insert_many(sols_data)
+    db.db['solweather'].insert_many(sols_data)
