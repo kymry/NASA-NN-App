@@ -54,16 +54,18 @@ def get_mars_data(db):
         # object_pairs_hook is needed to maintain the ordering
         raw_output = json.loads(raw_output.content, object_pairs_hook=OrderedDict)
     else:
-        # TODO raise exception and exit function
         pass
-
+        # TODO raise exception and exit function
 
     # process sol JSON objects
-    sols_data = []
+    #sols_data = []
     for sol in raw_output["sol_keys"]:
         sol_object = raw_output[sol]
         sol_object['sol'] = sol
+        sol_object['_id'] = sol
         sol_object.move_to_end('sol', last=False)
-        sols_data.append(raw_output[sol])
+        db.db['solweather'].update({'_id': sol}, sol_object, upsert=True)
+        #sols_data.append(raw_output[sol])
 
-    db.db['solweather'].insert_many(sols_data)
+
+    #db.db['solweather'].update_many(sols_data, sols_data, upsert=True)
