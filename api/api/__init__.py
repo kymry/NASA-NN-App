@@ -1,7 +1,7 @@
 from flask import Flask, g
 from flask_pymongo import PyMongo
 import api.external_apis as nasa_api
-import os
+from .config import Config
 
 # Globally accessible libraries
 mongo = PyMongo()
@@ -10,14 +10,9 @@ mongo = PyMongo()
 def create_app():
     ''' Application factory method --- creates and configures the Flask app object '''
 
-    # create and configure the app
+    # create and configure the app. __name__ is set to the name of the module in which it is used
     app = Flask(__name__)
-    app.config.from_mapping(
-        DEBUG=True,  # Turns on debugging features in Flask
-        MONGO_URI="mongodb://127.0.0.1:27017/marsdata",  # Connects to MongoDB running on localhost on port 27017
-        SECRET_KEY=os.environ.get('SECRET_KEY') or "H49J*dE#4kslf",
-        DATABASE="'/Users/kymryburwell/Google Drive/Code Repository/NASA ML API/api/databases/marsweather.sqlite3'"
-    )
+    app.config.from_object(Config)
 
     # Initialize SQLite3 and MongoDB
     from . import db

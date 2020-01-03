@@ -5,7 +5,7 @@ from flask.cli import with_appcontext
 
 DEFAULT_PATH = '/Users/kymryburwell/Google Drive/Code Repository/NASA ML API/api/databases/marsweather.sqlite3'
 
-# @click register the get_db command with the app instance
+# @click registers the get_db command with the app instance
 @click.command('get_db')
 def get_db():
     if 'db' not in g:

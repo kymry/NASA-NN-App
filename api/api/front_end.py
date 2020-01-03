@@ -6,12 +6,14 @@ from api.forms import MarsInquiryForm
 bp = Blueprint('front_end', __name__, url_prefix='/')  # url_prefix is appended to all URLs in this module
 
 
+# functions that handle routes are called "view functions" in Flask
 @bp.route('/', methods=['GET', 'POST'])
 def home():
 
     # instantiate a new form object and accepts user input via POST
     form = MarsInquiryForm()
 
+    # accepts and processes the form data (submitted by a user)
     if form.validate_on_submit():
         flash('Mars weather data requested for {}'.format(form.date.data))
         return redirect('/')
