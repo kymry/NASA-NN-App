@@ -1,6 +1,5 @@
-from flask import (Blueprint, render_template, flash, redirect)
-from api.__init__ import mongo
-from api.forms import MarsInquiryForm
+from flask import (Blueprint, render_template, flash, redirect, g)
+from .forms import MarsInquiryForm
 
 # All views (routes) for the front end -- registered with the app via a blueprint
 bp = Blueprint('front_end', __name__, url_prefix='/')  # url_prefix is appended to all URLs in this module
@@ -15,6 +14,7 @@ def home():
 
     # accepts and processes the form data (submitted by a user)
     if form.validate_on_submit():
+        # form data is contained in the form object (e.g. form.field_name.data)
         flash('Mars weather data requested for {}'.format(form.date.data))
         return redirect('/')
 

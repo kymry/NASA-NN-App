@@ -1,12 +1,7 @@
 import sqlite3
-import click
 from flask import current_app, g
-from flask.cli import with_appcontext
 
-DEFAULT_PATH = '/Users/kymryburwell/Google Drive/Code Repository/NASA ML API/api/databases/marsweather.sqlite3'
 
-# @click registers the get_db command with the app instance
-@click.command('get_db')
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -24,10 +19,11 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
+
 def init_app(app):
     ''' Registers all functions with the app instance '''
     app.teardown_appcontext(close_db)
-    app.cli.add_command(get_db)
+    get_db()
 
 
 def create_db(connection):
