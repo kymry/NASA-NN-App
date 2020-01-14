@@ -10,7 +10,4 @@ class Sol(sqldb.Model):
     pressure = sqldb.Column(sqldb.Float)
 
     def __repr__(self):
-        return 'sol {}: ' \
-               'average temp {}: ' \
-               'high temp {}:' \
-               'pressure {}'.format(self.sol, self.average_temperature, self.high_temperature, self.pressure)
+        return 'sol: {}'.format(self.sol)
