@@ -25,16 +25,3 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     get_db()
 
-
-def create_db(connection):
-    marsweather_sql = """
-    CREATE TABLE sols (
-        sol int PRIMARY KEY,
-        average_temperature float,
-        high_temperature float,
-        low_temperature float,
-        horizontal_wind_speed float,
-        pressure float) """
-    connection.execute(marsweather_sql)
-
-

@@ -18,8 +18,10 @@
 import requests
 import json
 from collections import OrderedDict
+from .sql_models import Sol
 
 API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
+
 
 def get_solarflare_data(start_date, end_date):
     ''' Queries the NASA solar flare API '''
@@ -39,33 +41,59 @@ def get_solarflare_data(start_date, end_date):
         print("Can't access NASA solar flare API")
 
 
-def get_mars_data(db):
-    """ Queries the NASA mars weather API for the following data and updates db
-        -- Atmospheric temperature degrees celsius
-        -- Horizontal wind speed, metres per second
-        -- Atmospheric pressure, pascals
-        db: MongoDB object
-        collection: MongoDB collection """
+def get_mars_weather_data(mongodb, sqldb):
+    """ Queries the NASA mars weather API """
 
     endpoint = "https://api.nasa.gov/insight_weather/?api_key=" + API_KEY + "&feedtype=json&ver=1.0"
     raw_output = requests.get(endpoint)
 
     if raw_output.ok:
-        # object_pairs_hook is needed to maintain the ordering
-        raw_output = json.loads(raw_output.content, object_pairs_hook=OrderedDict)
+        sols = json.loads(raw_output.content, object_pairs_hook=OrderedDict)
+        update_sqldb_mars_data(sqldb, sols)
+        update_mongoddb_mars_data(mongodb, sols)
     else:
-        pass
-        # TODO raise exception and exit function
+        raise ConnectionError
 
-    # process sol JSON objects
-    #sols_data = []
-    for sol in raw_output["sol_keys"]:
-        sol_object = raw_output[sol]
+
+def update_mongoddb_mars_data(db, sols):
+    for sol in sols["sol_keys"]:
+        sol_object = sols[sol]
         sol_object['sol'] = sol
         sol_object['_id'] = sol
         sol_object.move_to_end('sol', last=False)
         db.db['solweather'].update({'_id': sol}, sol_object, upsert=True)
-        #sols_data.append(raw_output[sol])
+   #db.db['solweather'].update_many(sols, sols, upsert=True)
 
 
-    #db.db['solweather'].update_many(sols_data, sols_data, upsert=True)
+def update_sqldb_mars_data(db, sols):
+    # each sol object is a dict
+    # TODO: create function for try, excepts
+    for x in sols["sol_keys"]:
+        sol = sols[x]
+        elem = Sol(sol=int(x))
+        try:
+            elem.average_temperature = sol['AT']['av']
+        except KeyError:
+            pass
+        try:
+            elem.high_temperature = sol['AT']['mx']
+        except KeyError:
+            pass
+        try:
+            elem.horizontal_wind_speed = sol['HWS']['av']
+        except KeyError:
+            pass
+        try:
+            elem.low_temperature = sol['AT']['mn']
+        except KeyError:
+            pass
+        try:
+            elem.pressure = sol['PRE']['av']
+        except KeyError:
+            pass
+        if not db.session.query(Sol).filter(Sol.sol == int(x)):
+            db.session.add(elem)
+            db.session.commit()
+
+
+

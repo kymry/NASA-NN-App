@@ -1,16 +1,20 @@
 from flask import Flask, g
 from flask_pymongo import PyMongo
-import api.external_apis as nasa_api
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from .config import Config
 from . import front_end
-from . import db
+from . import external_apis as ep
+from . import sql_models
 
-# Globally accessible
-mongo = PyMongo()
+# Globally accessible objects
+mongodb = PyMongo()
+sqldb = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app():
-    ''' Application factory method --- creates and configures the Flask app object '''
+    ''' Application factory method that creates and configures the Flask app object '''
 
     # create and configure the app. __name__ is set to the name of the module in which it is used
     app = Flask(__name__)
@@ -18,9 +22,11 @@ def create_app():
 
     with app.app_context():
 
-        # Initialize SQLite3 and MongoDB
-        mongo.init_app(app)
-        db.init_app(app)
+        # Initialize MongoDB and SQLite3 connections
+        mongodb.init_app(app)
+        sqldb.init_app(app)
+        migrate.init_app(app, sqldb)
+        from .sql_models import Sol  # must be placed after the db is initialized (terrible design I know)
 
         # register the front_end blueprint with the app (so that it can be accessed later)
         app.register_blueprint(front_end.bp)
@@ -28,12 +34,17 @@ def create_app():
         # ML models
         #model = pickle.load(open('TODO.pickle', 'rb'))
 
-        # these variables can be used in the '$ flask shell'
-        @app.shell_context_processor
-        def make_shell_context():
-            return {'db': db, 'mongo': mongo}
+        # these variables can be used in the '$ flask shell' context
+        register_shell_context_variables(app)
 
         # update mars data
-        nasa_api.get_mars_data(mongo)
+        ep.get_mars_weather_data(mongodb, sqldb)
 
         return app
+
+
+def register_shell_context_variables(app):
+    @app.shell_context_processor
+    def make_shell_context():
+        return {'sqldb': sqldb, 'mongodb': mongodb, 'Sol': sql_models.Sol}
+
