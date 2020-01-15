@@ -12,7 +12,3 @@ class Config:
     # 'sqlite:///' tells SQLAlchemy which database engine to use
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'databases/astronomicaldata.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = True  # if True, signals a change every time an update is made to the db
-
-
-if __name__ == "__main__":
-    print(basedir)

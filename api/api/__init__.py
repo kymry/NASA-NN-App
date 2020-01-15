@@ -40,6 +40,8 @@ def create_app():
 
         # start the job scheduler
         start_job_scheduler(app)
+        ep.get_solarflare_data(sqldb)
+        print(sql_models.Flare.query.all())
 
         return app
 
@@ -52,7 +54,7 @@ def register_blueprints(app):
 def register_shell_context_variables(app):
     @app.shell_context_processor
     def make_shell_context():
-        return {'sqldb': sqldb, 'mongodb': mongodb, 'Flare': sql_models.Flare}
+        return {'sqldb': sqldb, 'mongodb': mongodb}
 
 
 def start_job_scheduler(app):

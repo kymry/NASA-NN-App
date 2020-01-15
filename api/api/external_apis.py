@@ -35,22 +35,21 @@ def get_solarflare_data(db):
         output = json.loads(raw_data.content)
         update_sqldb_flare_date(db, output)
     else:
-        pass
-        #raise ConnectionError
+        print('ConnectionError')
 
 
 def update_sqldb_flare_date(db, data):
     for elem in data:
         flare = Flare(id=elem['flrID'])
-        try: flare.begin_time = elem['beginTime']
+        try: flare.begin_time = parser.parse(elem['beginTime'])
         except: pass
-        try: flare.peak_time = parser.isoparse(elem['peakTime'])
+        try: flare.peak_time = parser.parse(elem['peakTime'])
         except: pass
-        try: flare.end_time = parser.isoparse(elem['endTime'])
+        try: flare.end_time = parser.parse(elem['endTime'])
         except: pass
-        try: flare.pressure = parser.isoparse(elem['classType'])
+        try: flare.class_type = str(elem['classType'])
         except: pass
-        try: flare.activity_region = elem['activeRegionNum']
+        try: flare.activity_region = str(elem['activeRegionNum'])
         except: pass
 
         # add unique entries only
@@ -69,7 +68,7 @@ def get_mars_weather_data(mongodb, sqldb):
         update_sqldb_mars_data(sqldb, sols)
         update_mongoddb_mars_data(mongodb, sols)
     else:
-        raise ConnectionError
+        print('ConnectionError')
 
 
 def update_mongoddb_mars_data(db, sols):

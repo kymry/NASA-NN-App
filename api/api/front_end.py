@@ -1,11 +1,10 @@
-from flask import (Blueprint, render_template, flash, redirect, g)
+from flask import (Blueprint, render_template, flash, redirect)
 from .forms import MarsInquiryForm
 
 # All views (routes) for the front end -- registered with the app via a blueprint
 bp = Blueprint('front_end', __name__, url_prefix='/')  # url_prefix is appended to all URLs in this module
 
 
-# functions that handle routes are called "view functions" in Flask
 @bp.route('/', methods=['GET', 'POST'])
 def home():
 
