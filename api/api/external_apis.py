@@ -16,24 +16,47 @@
 import requests
 import json
 from collections import OrderedDict
-from .sql_models import Sol
+from .sql_models import Sol, Flare
+import datetime
+from dateutil import parser
 
 API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
 
 
-def get_solarflare_data(start_date, end_date):
+def get_solarflare_data(db):
     ''' Queries the NASA solar flare API '''
-    endpoint = ('https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=' + start_date + '&endDate=' + end_date)
-    data = requests.get(endpoint)
-    output = None
+    start_date = str(datetime.date(2017, 2, 2))
+    end_date = str(datetime.date(2019, 2, 3))
+    endpoint = 'https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=' + start_date + '&endDate=' + end_date
+    raw_data = requests.get(endpoint)
 
     # API was successfully queried
-    if data.ok:
-        output = json.loads(data.content)
-        # TODO: parse out needed data from output
-        return output
+    if raw_data.ok and raw_data.content:
+        output = json.loads(raw_data.content)
+        update_sqldb_flare_date(db, output)
     else:
-        raise ConnectionError
+        pass
+        #raise ConnectionError
+
+
+def update_sqldb_flare_date(db, data):
+    for elem in data:
+        flare = Flare(id=elem['flrID'])
+        try: flare.begin_time = elem['beginTime']
+        except: pass
+        try: flare.peak_time = parser.isoparse(elem['peakTime'])
+        except: pass
+        try: flare.end_time = parser.isoparse(elem['endTime'])
+        except: pass
+        try: flare.pressure = parser.isoparse(elem['classType'])
+        except: pass
+        try: flare.activity_region = elem['activeRegionNum']
+        except: pass
+
+        # add unique entries only
+        if not db.session.query(Flare).filter(Flare.id == elem["flrID"]):
+            db.session.add(flare)
+            db.session.commit()
 
 
 def get_mars_weather_data(mongodb, sqldb):
@@ -59,7 +82,6 @@ def update_mongoddb_mars_data(db, sols):
 
 
 def update_sqldb_mars_data(db, sols):
-    # TODO: create function for try, excepts
     for sol in sols["sol_keys"]:
         current_sol = sols[sol]
         sol_object = Sol(sol=int(sol))
