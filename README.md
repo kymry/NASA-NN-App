@@ -4,7 +4,7 @@ A work in progress. Check back soon!
 
 A web app that aggregates data and images from various NASA and other astronomical APIs and allows users to create accounts and subscribe to the APIs of their choosing. Once subscribed, a daily email with the newest data from the user's subscriptions will be sent to their inbox.  
 
-The app also allows a user to upload an unlabeled image of a planet from our solar system, and a predicion of which planet it is will be made using a trained convolutional nerual network. 
+The app also allows a user to upload an unlabeled image of a planet from our solar system. A trained convolutional neural network will then be used to classify the planet image. 
 
 - Built in Python using Flask and Bootstrap
 - MongoDB used to store raw JSON from NASA apis
