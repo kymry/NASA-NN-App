@@ -16,7 +16,8 @@
 import requests
 import json
 from collections import OrderedDict
-from .sql_models import Sol, Flare
+from .models.flare import Flare
+from .models.sol import Sol
 import datetime
 from dateutil import parser
 

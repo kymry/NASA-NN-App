@@ -1,90 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <title>Planet Prediction</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
 
-  <title>End of Line Club</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Oswald:400,300,700|EB+Garamond" rel="stylesheet">
 
-  <!-- Bootstrap core CSS -->
-  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS File -->
+  <link href="../static/theme/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="../static/theme/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="../static/theme/css/style.css" rel="stylesheet">
 
 </head>
 
-<body>
+<body data-spy="scroll" data-offset="0" data-target="#theMenu">
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
-        </ul>
-      </div>
+  <!-- Menu -->
+  <nav class="menu" id="theMenu">
+    <div class="menu-wrap">
+      <h1 class="logo"><a href="index.html#home">Minimal</a></h1>
+      <i class="fa fa-times-circle menu-close"></i>
+      <a href="#home" class="smoothscroll">Home</a>
+      <a href="#about" class="smoothscroll">About</a>
+      <a href="#portfolio" class="smoothscroll">Portfolio</a>
+      <a href="#contact" class="smoothscroll">Contact</a>
+      <a href="#"><i class="fa fa-facebook"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-dribbble"></i></a>
+      <a href="#"><i class="fa fa-envelope"></i></a>
     </div>
+
+    <!-- Menu button -->
+    <div id="menuToggle"><i class="fa fa-bars"></i></div>
   </nav>
 
+  <!-- ========== HEADER SECTION ========== -->
+  <section id="home" name="home"></section>
+  <div id="headerwrap">
+    <div class="container">
+      <br>
+      <div class="row">
+        <h1>Welcome to the End of the Line Club</h1>
+        <br>
+        <br>
+        <div class="col-lg-6 col-lg-offset-3">
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /headerwrap -->
 
-  <!-- Page Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
+  <!-- ========== ABOUT SECTION ========== -->
+  <section id="about" name="about"></section>
+  <div id="f">
+    <div class="container">
+      <div class="row">
+        <h3>ABOUT</h3>
+        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
 
-        {% if user %}
-          <h1> Welcome to the end of the line club </h1>
-        {% endif %}
+        <!-- INTRO INFORMATIO-->
+        <div class="col-lg-6 col-lg-offset-3">
+          <p>This web app will 'soon' allow users to upload unlabeled images of planets in our solar system, send the image through a trained CNN,
+          and predict which planet it is.</p>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /f -->
 
-         <h1>Choose a Date</h1>
-         <form action="" method="POST" novalidate>
-        {{  form.hidden_tag() }}
-        <p>
+  <!-- ========== CAROUSEL SECTION ==========
+  <section id="portfolio" name="portfolio"></section>
+  <div id="f">
+    <div class="container">
+      <div class="row centered">
+        <h3>SOME PROJECTS</h3>
+        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+
+        <div class="col-lg-6 col-lg-offset-3">
+          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="item active centered">
+                <img class="img-responsive" src="../static/theme/img/c1.png" alt="">
+              </div>
+              <div class="item centered">
+                <img class="img-responsive" src="../static/theme/img/c2.png" alt="">
+              </div>
+              <div class="item centered">
+                <img class="img-responsive" src="../static/theme/img/c3.png" alt="">
+              </div>
+            </div>
+            <br>
+            <br>
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ -->
+  <!-- ========== CONTACT SECTION ========== -->
+  <section id="contact" name="contact"></section>
+  <div id="f">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <form class="contact-form php-mail-form" action="" method="POST" novalidate>
+            {{  form.hidden_tag() }}
+            <p>
             {{ form.date.label }}<br>
             {{  form.date(size=32) }}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-
-    <!-- renders Flask 'flash' messages after a user submits a web form -->
-     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
+            </p>
+            <p>{{ form.submit() }}</p>
+          </form>
+            <!-- renders Flask 'flash' messages after a user submits a web form -->
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
             {% for message in messages %}
             <li>{{ message }}</li>
             {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-
-        </ul>
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="/static/jquery/jquery.slim.min.js"></script>
-  <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <!-- JavaScript Libraries -->
+  <script src="../static/theme/lib/jquery/jquery.min.js"></script>
+  <script src="../static/theme/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../static/theme/lib/php-mail-form/validate.js"></script>
+  <script src="../static/theme/lib/easing/easing.min.js"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="../static/theme/js/main.js"></script>
 
 </body>
-
 </html>

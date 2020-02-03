@@ -1,12 +1,11 @@
-from flask import Flask, g
+from flask import Flask
 from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_apscheduler import APScheduler
 from .config import Config
-from . import front_end
 from . import external_apis as ep
-from . import sql_models
+from .services import front_end
 
 # Globally accessible objects
 mongodb = PyMongo()
@@ -21,13 +20,13 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    # within this block, current_app points to app
     with app.app_context():
 
         # Initialize MongoDB and SQLite3 connections
         mongodb.init_app(app)
         sqldb.init_app(app)
         migrate.init_app(app, sqldb)
-        from .sql_models import Flare
 
         # register the front_end blueprint with the app (so that it can be accessed later)
         register_blueprints(app)
@@ -40,8 +39,6 @@ def create_app():
 
         # start the job scheduler
         start_job_scheduler(app)
-        ep.get_solarflare_data(sqldb)
-        print(sql_models.Flare.query.all())
 
         return app
 
@@ -67,7 +64,6 @@ def start_job_scheduler(app):
 
 def query_nasa_apis(app):
     with app.app_context():
-        print('hello')
         ep.get_mars_weather_data(mongodb, sqldb)
         ep.get_solarflare_data(sqldb)
 

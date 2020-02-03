@@ -1,5 +1,4 @@
 *.idea
 .DS_Store
 api/.idea/untitled.iml
-api/__pycache__/
-api/api/__pycache__/
+**/__pycache__
