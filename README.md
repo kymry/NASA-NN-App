@@ -2,12 +2,21 @@
 
 A work in progress. Check back soon!
 
-A web app that aggregates astronomical data from the NASA api, feeds the data to ML models and allows the user to explore predictions. E.g. a user can enter a future data and the predicted temperature on Mars on that date will be returned. 
+A web app that aggregates data and images from various NASA and other astronomical APIs and allows users to create accounts and subscribe to the APIs of their choosing. Once subscribed, a daily email with the newest data from the user's subscriptions will be sent to their inbox.  
+
+The app also allows a user to upload an unlabeled image of a planet from our solar system, and a predicion of which planet it is will be made using a trained convolutional nerual network. 
 
 - Built in Python using Flask and Bootstrap
 - MongoDB used to store raw JSON from NASA apis
-- SQLite used to store processed data in a relational manner that allows it to be consumed by ML models
-- Python built web crawler to obtain images of planets in our solar system to be used for training NN
-- Scikit Learn and TensorFlow used for model creation and training (e.g Mars temperature data prediction)
-- Python's Pickle used to serialize and store the learned models
-- A custom built (albeit simple) deep neural network built in Python that allows planet image classification (from our solar system) 
+- SQLite used to store processed data in a relational manner 
+- Local file system used to store images
+- Python built web crawler to obtain images of planets in our solar system to be used for training a CNN
+- TensorFlow used to train a CNN to classify images of planets in our solar system 
+
+Flask Details 
+
+- flask_sqlalchemy for SQL ORM 
+- flask_pymongo for MongoDb 
+- flask_apscheduler for scheduling daily API calls
+- flask_wtf for user forms
+- Flask-Login for user account creation and management
