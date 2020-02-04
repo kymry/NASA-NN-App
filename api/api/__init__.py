@@ -39,7 +39,8 @@ def create_app():
 
         # start the job scheduler
         ep.get_astronomy_pic_of_day(sqldb)
-        start_job_scheduler(app)
+        #start_job_scheduler(app)
+
 
         return app
 

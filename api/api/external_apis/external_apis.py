@@ -24,18 +24,15 @@ import os
 from collections import OrderedDict
 import datetime
 from dateutil import parser
-from ..models.apod import Apod
-from ..models.flare import Flare
-from ..models.sol import Sol
+from ..models.models import Apod, Flare, Sol
 
 
 API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
-IMAGE_BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+IMAGE_BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def get_astronomy_pic_of_day(db):
     """ Queries the NASA Astronomy Picture of the Day (APOD) API """
-
     endpoint = 'https://api.nasa.gov/planetary/apod?api_key=' + API_KEY
     raw_data = requests.get(endpoint)
 
@@ -47,22 +44,19 @@ def get_astronomy_pic_of_day(db):
 
 
 def process_astronomy_pic_of_day(db, data):
-    apod = Apod(date=parser.parse(data['date'], yearfirst=True))
+    apod = Apod()
+    apod.date = data['date']
     if 'explanation' in data: apod.explanation = data['explanation']
     if 'media_type' in data: apod.media_type = data['media_type']
     if 'title' in data: apod.title = data['title']
     if 'url' in data: apod.url = data['url']
+    apod.path = os.path.join(IMAGE_BASE_DIR, 'images/daily', data['date'] + '.jpg')
 
-    file_system_path = os.path.join(IMAGE_BASE_DIR, 'images/daily', data['date'] + '.jpg')
-    apod.path = file_system_path
-
-    print(parser.parse(data['date'], yearfirst=True))
     # add unique entries only
-    if not db.session.query(Apod).filter(Apod.date == parser.parse(data['date'], yearfirst=True)):
+    if not db.session.query(Apod).filter(Apod.date == data['date']):
         db.session.add(apod)
         db.session.commit()
-        urllib.request.urlretrieve(data['url'], file_system_path)
-        print(apod)
+        urllib.request.urlretrieve(data['url'], apod.path)
 
 
 def get_solar_flare(db):
