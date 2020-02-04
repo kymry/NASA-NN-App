@@ -1,4 +1,4 @@
-# Nasa-ML-API
+# Nasa-NN-App
 
 A work in progress. Check back soon!
 
