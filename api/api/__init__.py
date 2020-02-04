@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_apscheduler import APScheduler
 from .config import Config
-from . import external_apis as ep
+from .external_apis import external_apis as ep
 from .services import front_end
 
 # Globally accessible objects
@@ -38,6 +38,7 @@ def create_app():
         register_shell_context_variables(app)
 
         # start the job scheduler
+        ep.get_astronomy_pic_of_day(sqldb)
         start_job_scheduler(app)
 
         return app
@@ -51,7 +52,7 @@ def register_blueprints(app):
 def register_shell_context_variables(app):
     @app.shell_context_processor
     def make_shell_context():
-        return {'sqldb': sqldb, 'mongodb': mongodb}
+        return {'db': sqldb, 'mongodb': mongodb}
 
 
 def start_job_scheduler(app):
@@ -64,6 +65,8 @@ def start_job_scheduler(app):
 
 def query_nasa_apis(app):
     with app.app_context():
-        ep.get_mars_weather_data(mongodb, sqldb)
-        ep.get_solarflare_data(sqldb)
+        ep.get_mars_weather(mongodb, sqldb)
+        ep.get_solar_flare(sqldb)
+        ep.get_astronomy_pic_of_day(sqldb)
+
 

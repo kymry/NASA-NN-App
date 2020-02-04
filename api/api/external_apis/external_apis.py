@@ -11,20 +11,61 @@
     https://ccmc.gsfc.nasa.gov/support/DONKI-webservices.php
     GET https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=yyyy-MM-dd&endDate=yyyy-MM-dd
     returns: JSON
+
+    ---    Astronomy Picture of the Day ----
+    GET https://api.nasa.gov/planetary/apod?api_key=KEY
+    returns: JSON
 '''
 
 import requests
+import urllib.request
 import json
+import os
 from collections import OrderedDict
-from .models.flare import Flare
-from .models.sol import Sol
 import datetime
 from dateutil import parser
+from ..models.apod import Apod
+from ..models.flare import Flare
+from ..models.sol import Sol
+
 
 API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
+IMAGE_BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
-def get_solarflare_data(db):
+def get_astronomy_pic_of_day(db):
+    """ Queries the NASA Astronomy Picture of the Day (APOD) API """
+
+    endpoint = 'https://api.nasa.gov/planetary/apod?api_key=' + API_KEY
+    raw_data = requests.get(endpoint)
+
+    if raw_data.ok and raw_data.content:
+        output = json.loads(raw_data.content)
+        process_astronomy_pic_of_day(db, output)
+    else:
+        print('Conection Error')
+
+
+def process_astronomy_pic_of_day(db, data):
+    apod = Apod(date=parser.parse(data['date'], yearfirst=True))
+    if 'explanation' in data: apod.explanation = data['explanation']
+    if 'media_type' in data: apod.media_type = data['media_type']
+    if 'title' in data: apod.title = data['title']
+    if 'url' in data: apod.url = data['url']
+
+    file_system_path = os.path.join(IMAGE_BASE_DIR, 'images/daily', data['date'] + '.jpg')
+    apod.path = file_system_path
+
+    print(parser.parse(data['date'], yearfirst=True))
+    # add unique entries only
+    if not db.session.query(Apod).filter(Apod.date == parser.parse(data['date'], yearfirst=True)):
+        db.session.add(apod)
+        db.session.commit()
+        urllib.request.urlretrieve(data['url'], file_system_path)
+        print(apod)
+
+
+def get_solar_flare(db):
     ''' Queries the NASA solar flare API '''
     start_date = str(datetime.date(2017, 2, 2))
     end_date = str(datetime.date(2019, 2, 3))
@@ -59,7 +100,7 @@ def update_sqldb_flare_date(db, data):
             db.session.commit()
 
 
-def get_mars_weather_data(mongodb, sqldb):
+def get_mars_weather(mongodb, sqldb):
     """ Queries the NASA mars weather API """
     endpoint = "https://api.nasa.gov/insight_weather/?api_key=" + API_KEY + "&feedtype=json&ver=1.0"
     raw_output = requests.get(endpoint)
