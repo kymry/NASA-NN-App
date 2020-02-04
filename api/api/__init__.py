@@ -7,7 +7,7 @@ from .config import Config
 from .external_apis import external_apis as ep
 from .services import front_end
 
-# Globally accessible objects
+
 mongodb = PyMongo()
 sqldb = SQLAlchemy()
 migrate = Migrate()
@@ -31,16 +31,11 @@ def create_app():
         # register the front_end blueprint with the app (so that it can be accessed later)
         register_blueprints(app)
 
-        # ML models
-        #model = pickle.load(open('TODO.pickle', 'rb'))
-
         # these variables can be used in the '$ flask shell' context
         register_shell_context_variables(app)
 
-        # start the job scheduler
-        ep.get_astronomy_pic_of_day(sqldb)
-        #start_job_scheduler(app)
-
+        #start_job_scheduler(app, mongodb, sqldb)
+        ep.query_apod_api(sqldb)
 
         return app
 
@@ -56,18 +51,11 @@ def register_shell_context_variables(app):
         return {'db': sqldb, 'mongodb': mongodb}
 
 
-def start_job_scheduler(app):
+def start_job_scheduler(app, mongodb, sqldb):
     with app.app_context():
         scheduler = APScheduler()
         scheduler.init_app(app)
         scheduler.start()
-        app.apscheduler.add_job(func=query_nasa_apis, args=[app], trigger='interval', days=1, id='call_apis')
-
-
-def query_nasa_apis(app):
-    with app.app_context():
-        ep.get_mars_weather(mongodb, sqldb)
-        ep.get_solar_flare(sqldb)
-        ep.get_astronomy_pic_of_day(sqldb)
-
+        app.apscheduler.add_job(func=ep.query_apis, args=[app, mongodb, sqldb],
+                                trigger='interval', days=1, id='call_apis')
 

@@ -1,38 +1,38 @@
-from ..__init__ import sqldb
+from ..__init__ import sqldb as db
 
 
-class Apod(sqldb.Model):
+class Apod(db.Model):
     """ Astronomy Picture of the Day (APOD) """
-    date = sqldb.Column(sqldb.String, primary_key=True)
-    explanation = sqldb.Column(sqldb.String)
-    media_type = sqldb.Column(sqldb.String)
-    title = sqldb.Column(sqldb.String)
-    url = sqldb.Column(sqldb.String)
-    path = sqldb.Column(sqldb.String)
+    date = db.Column(db.String, primary_key=True)
+    explanation = db.Column(db.String)
+    media_type = db.Column(db.String)
+    title = db.Column(db.String)
+    url = db.Column(db.String)
+    path = db.Column(db.String)
 
     def __repr__(self):
         return 'Astronomy Picture of the Day: {}'.format(self.title)
 
 
-class Sol(sqldb.Model):
-    sol = sqldb.Column(sqldb.Integer, primary_key=True)
-    average_temperature = sqldb.Column(sqldb.Float)
-    high_temperature = sqldb.Column(sqldb.Float)
-    low_temperature = sqldb.Column(sqldb.Float)
-    horizontal_wind_speed = sqldb.Column(sqldb.Float)
-    pressure = sqldb.Column(sqldb.Float)
+class Sol(db.Model):
+    sol = db.Column(db.Integer, primary_key=True)
+    average_temperature = db.Column(db.Float)
+    high_temperature = db.Column(db.Float)
+    low_temperature = db.Column(db.Float)
+    horizontal_wind_speed = db.Column(db.Float)
+    pressure = db.Column(db.Float)
 
     def __repr__(self):
         return 'sol: {}'.format(self.sol)
 
 
-class Flare(sqldb.Model):
-    id = sqldb.Column(sqldb.String, primary_key=True)
-    begin_time = sqldb.Column(sqldb.DateTime)
-    peak_time = sqldb.Column(sqldb.DateTime)
-    end_time = sqldb.Column(sqldb.DateTime)
-    class_type = sqldb.Column(sqldb.String)
-    activity_region = sqldb.Column(sqldb.String)
+class Flare(db.Model):
+    id = db.Column(db.String, primary_key=True)
+    begin_time = db.Column(db.DateTime)
+    peak_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    class_type = db.Column(db.String)
+    activity_region = db.Column(db.String)
 
     def __repr__(self):
         return 'flare: {}'.format(self.id)
