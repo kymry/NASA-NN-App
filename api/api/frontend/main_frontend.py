@@ -1,5 +1,6 @@
 from flask import (Blueprint, render_template, flash, redirect)
-from ..forms import MarsInquiryForm
+from api.api.forms.forms import MarsInquiryForm
+
 
 # All views (routes) for the front end -- registered with the app via a blueprint
 bp = Blueprint('front_end', __name__, url_prefix='/')  # url_prefix is appended to all URLs in this module
@@ -7,7 +8,6 @@ bp = Blueprint('front_end', __name__, url_prefix='/')  # url_prefix is appended 
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-
     # instantiate a new form object and accept user input via POST
     form = MarsInquiryForm()
 

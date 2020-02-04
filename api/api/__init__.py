@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, current_app
 from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_apscheduler import APScheduler
 from .config import Config
 from .external_apis import external_apis as ep
-from .services import front_end
+from .frontend import main_frontend
 
 
 mongodb = PyMongo()
@@ -34,15 +34,14 @@ def create_app():
         # these variables can be used in the '$ flask shell' context
         register_shell_context_variables(app)
 
-        #start_job_scheduler(app, mongodb, sqldb)
-        ep.query_apod_api(sqldb)
+        start_job_scheduler(app)
 
         return app
 
 
 def register_blueprints(app):
     with app.app_context():
-        app.register_blueprint(front_end.bp)
+        app.register_blueprint(main_frontend.bp)
 
 
 def register_shell_context_variables(app):
@@ -51,11 +50,11 @@ def register_shell_context_variables(app):
         return {'db': sqldb, 'mongodb': mongodb}
 
 
-def start_job_scheduler(app, mongodb, sqldb):
+def start_job_scheduler(app):
     with app.app_context():
         scheduler = APScheduler()
         scheduler.init_app(app)
         scheduler.start()
-        app.apscheduler.add_job(func=ep.query_apis, args=[app, mongodb, sqldb],
-                                trigger='interval', days=1, id='call_apis')
+        app.apscheduler.add_job(func=ep.query_apis, args=[mongodb, sqldb],
+                                trigger='interval', seconds=5, id='call_apis')
 

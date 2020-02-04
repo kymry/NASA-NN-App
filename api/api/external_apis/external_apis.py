@@ -13,7 +13,7 @@
     GET https://api.nasa.gov/planetary/apod?api_key=KEY
     returns: JSON
 '''
-
+from flask import g, current_app
 import requests
 import urllib.request
 import json
