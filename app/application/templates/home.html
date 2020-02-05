@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{%  block index %}
+  <!-- ========== HEADER SECTION ========== -->
+  <section id="home" name="home"></section>
+  <div id="headerwrap">
+    <div class="container">
+      <br>
+      <div class="row">
+        <h1>Welcome to the End of the Line Club</h1>
+        <br>
+        <br>
+        <div class="col-lg-6 col-lg-offset-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========== ABOUT SECTION ========== -->
+  <section id="about" name="about"></section>
+  <div id="f">
+    <div class="container">
+      <div class="row">
+        <h3>ABOUT</h3>
+        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+
+        <div class="col-lg-6 col-lg-offset-3">
+          <p>Hello and welcome! This web app is a work in progress that will have two main functions. </p>
+          <p>(i) Allow users to upload unlabeled images of planets in our solar system, send the image through a trained CNN,
+          and predict which planet it is.</p>
+          <p>(ii) Aggregate data and images from various NASA and other astronomical APIs and allow users to create
+              accounts and subscribe to the APIs of their choosing. Once subscribed, a daily email with the newest
+              data from the user's subscriptions will be sent to their inbox in a nicely formatted summary email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

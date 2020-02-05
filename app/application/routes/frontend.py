@@ -1,11 +1,27 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from forms.forms import LoginForm
+from forms.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user
 from models.models import User
+from models.models import db
 
 
 # All views (routes) for the UI are registered with the app via a blueprint
 bp = Blueprint('routes', __name__, url_prefix='/')
+
+
+@bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Woohoo! You can now subscribe to astronomical APIs until your seeing aliens!')
+        return redirect(url_for('routes.login'))
+    return render_template('register.html', title='Register', form=form)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -21,7 +37,7 @@ def login():
             return redirect(url_for('routes.login'))
         # Registers the user as logged in
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('routes.login'))
+        return redirect(url_for('routes.home'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -33,9 +49,7 @@ def logout():
 
 @bp.route('/', methods=['GET', 'POST'])
 def home():
-
-    # invoke the Jinja2 template engine
-    return render_template('index.html')
+    return render_template('home.html')
 
 
 @bp.errorhandler(404)
