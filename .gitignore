@@ -2,4 +2,5 @@
 .DS_Store
 api/.idea/untitled.iml
 **/__pycache__
-api/api/images
+app/application/images
+app/application/databases
