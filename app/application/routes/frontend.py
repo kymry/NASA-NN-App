@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from forms.forms import LoginForm
 from flask_login import current_user, login_user, logout_user
-from models import User
+from models.models import User
 
 
 # All views (routes) for the UI are registered with the app via a blueprint

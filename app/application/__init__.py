@@ -2,7 +2,7 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from config import Config
 from external_apis import external_apis as ep
-from frontend import routes
+from routes import frontend
 
 
 def create_app():
@@ -12,7 +12,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    from models import db, mongodb, migrate, login
+    from models.models import db, mongodb, migrate, login
 
     # Initialize plugins with the app object
     mongodb.init_app(app)
@@ -36,7 +36,7 @@ def create_app():
 
 def register_blueprints(app):
     with app.app_context():
-        app.register_blueprint(routes.bp)
+        app.register_blueprint(frontend.bp)
 
 
 def register_shell_context_variables(app, db, mongodb):
