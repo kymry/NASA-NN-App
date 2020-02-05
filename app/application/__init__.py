@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
-from .config import Config
-from .external_apis import external_apis as ep
-from .frontend import main_frontend
+from config import Config
+from external_apis import external_apis as ep
+from frontend import routes
+
 
 def create_app():
     ''' Application factory method that creates and configures the Flask app object '''
@@ -11,18 +12,18 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    from app.application.models import db, mongodb, migrate
-    from app.application import models
+    from models import db, mongodb, migrate, login
 
-    # Initialize MongoDB and SQLite3 connections
+    # Initialize plugins with the app object
     mongodb.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
+    login.init_app(app)
 
     # within this block, current_app points to app
     with app.app_context():
 
-        # register the front_end blueprint with the app (so that it can be accessed later)
+        # register the routes blueprint with the app (so that it can be accessed later)
         register_blueprints(app)
 
         # these variables can be used in the '$ flask shell' context
@@ -35,7 +36,7 @@ def create_app():
 
 def register_blueprints(app):
     with app.app_context():
-        app.register_blueprint(main_frontend.bp)
+        app.register_blueprint(routes.bp)
 
 
 def register_shell_context_variables(app, db, mongodb):
@@ -50,5 +51,5 @@ def start_job_scheduler(app, db, mongodb):
         scheduler.init_app(app)
         scheduler.start()
         app.apscheduler.add_job(func=ep.query_apis, args=[app, mongodb, db],
-                                trigger='interval', seconds=5, id='call_apis')
+                                trigger='interval', minutes=5, id='call_apis')
 

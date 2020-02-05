@@ -20,10 +20,10 @@ import os
 from collections import OrderedDict
 import datetime
 from dateutil import parser
-from ..models import Apod, Flare, Sol
+from models import Apod, Flare, Sol
 
 
-API_KEY = "p5G79FjyWMrq7DiKGKNb0XEsc49ROtPjvSSbJigx"
+API_KEY = "nnbXgYgvAzynrP8e3KVd9WgPsfIl0eHweH2ZQSsu"
 IMAGE_BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -37,7 +37,7 @@ def query_apis(app, mongodb, sqldb):
 
 
 def query_apod_api(db):
-    endpoint = 'https://application.nasa.gov/planetary/apod?api_key=' + API_KEY
+    endpoint = 'https://api.nasa.gov/planetary/apod?api_key=' + API_KEY
     raw_data = requests.get(endpoint)
 
     if raw_data.ok and raw_data.content:
@@ -62,8 +62,8 @@ def process_apod_api(db, data):
 
 
 def query_flare_api(db):
-    start_date = datetime.date.today()
-    end_date = datetime.date.today()
+    start_date = str(datetime.date.today())
+    end_date = str(datetime.date.today())
     endpoint = 'https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=' + start_date + '&endDate=' + end_date
     raw_data = requests.get(endpoint)
 
@@ -95,7 +95,7 @@ def process_flare_api(db, data):
 
 
 def query_mars_api(mongodb, sqldb):
-    endpoint = "https://application.nasa.gov/insight_weather/?api_key=" + API_KEY + "&feedtype=json&ver=1.0"
+    endpoint = "https://api.nasa.gov/insight_weather/?api_key=" + API_KEY + "&feedtype=json&ver=1.0"
     raw_output = requests.get(endpoint)
 
     if raw_output.ok:

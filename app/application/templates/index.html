@@ -9,13 +9,10 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Oswald:400,300,700|EB+Garamond" rel="stylesheet">
-
   <!-- Bootstrap CSS File -->
   <link href="../static/theme/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- Libraries CSS Files -->
   <link href="../static/theme/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
   <!-- Main Stylesheet File -->
   <link href="../static/theme/css/style.css" rel="stylesheet">
 
@@ -28,14 +25,13 @@
     <div class="menu-wrap">
       <h1 class="logo"><a href="index.html#home">Minimal</a></h1>
       <i class="fa fa-times-circle menu-close"></i>
-      <a href="#home" class="smoothscroll">Home</a>
+      <a href="{{ url_for('routes.home') }}" class="smoothscroll">Home</a>
       <a href="#about" class="smoothscroll">About</a>
-      <a href="#portfolio" class="smoothscroll">Portfolio</a>
-      <a href="#contact" class="smoothscroll">Contact</a>
-      <a href="#"><i class="fa fa-facebook"></i></a>
-      <a href="#"><i class="fa fa-twitter"></i></a>
-      <a href="#"><i class="fa fa-dribbble"></i></a>
-      <a href="#"><i class="fa fa-envelope"></i></a>
+        {% if current_user.is_anonymous %}
+      <a href="{{ url_for('routes.login') }}">Login</a>
+        {% else %}
+      <a href="{{ url_for('routes.logout') }}">Logout</a>
+        {% endif %}
     </div>
 
     <!-- Menu button -->
@@ -76,67 +72,23 @@
     </div>
     <!-- /container -->
   </div>
-  <!-- /f -->
 
-  <!-- ========== CAROUSEL SECTION ==========
-  <section id="portfolio" name="portfolio"></section>
-  <div id="f">
+   <!-- ========== LOGIN SECTION ========== -->
+    <div id="f">
     <div class="container">
-      <div class="row centered">
-        <h3>SOME PROJECTS</h3>
+      <div class="row">
+        <h3>ABOUT</h3>
         <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
-
-        <div class="col-lg-6 col-lg-offset-3">
-          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="item active centered">
-                <img class="img-responsive" src="../static/theme/img/c1.png" alt="">
-              </div>
-              <div class="item centered">
-                <img class="img-responsive" src="../static/theme/img/c2.png" alt="">
-              </div>
-              <div class="item centered">
-                <img class="img-responsive" src="../static/theme/img/c3.png" alt="">
-              </div>
-            </div>
-            <br>
-            <br>
-            <ol class="carousel-indicators">
-              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-            </ol>
-          </div>
-        </div>
+        {%  block login %}{% endblock %}
       </div>
     </div>
-  </div>
- -->
+    </div>
+
   <!-- ========== CONTACT SECTION ========== -->
   <section id="contact" name="contact"></section>
   <div id="f">
     <div class="container">
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <form class="contact-form php-mail-form" action="" method="POST" novalidate>
-            {{  form.hidden_tag() }}
-            <p>
-            {{ form.date.label }}<br>
-            {{  form.date(size=32) }}
-            </p>
-            <p>{{ form.submit() }}</p>
-          </form>
-            <!-- renders Flask 'flash' messages after a user submits a web form -->
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        </div>
       </div>
     </div>
   </div>
