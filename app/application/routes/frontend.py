@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from forms.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user
 from models.models import User
@@ -7,6 +7,18 @@ from models.models import db
 
 # All views (routes) for the UI are registered with the app via a blueprint
 bp = Blueprint('routes', __name__, url_prefix='/')
+
+
+@bp.route('/refresh', methods=['GET', 'POST'])
+def refresh():
+    return render_template('refresh.html')
+
+
+@bp.route('/dynamic', methods=['GET', 'POST'])
+def dynamic():
+    ## subscribe user to API here
+    print(request.form['id'], request.form['subscribe'])
+    return "success"
 
 
 @bp.route('/register', methods=['GET', 'POST'])
