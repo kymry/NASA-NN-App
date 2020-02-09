@@ -2,7 +2,7 @@
 
 
 {%  block index %}
-  <!-- ========== HEADER SECTION ========== -->
+<!-- ========== HEADER SECTION ========== -->
   <section id="home" name="home"></section>
   <div id="headerwrap">
     <div class="container">
@@ -17,8 +17,52 @@
     </div>
   </div>
 
+<!-- ========== SUBSCRIPTION SECTION ========== -->
+    <div id="subscription_1">
+        <div class="container">
+          <div class="row">
+            <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+                 {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+                 <button id="unsubscribe" onclick="subscription(1)">unsubscribe</button>
+                 {%  else %}
+                 <button id="subscribe" onclick="subscription(1)">subscribe</button>
+                 {%  endif %}
+            </div>
+        </div>
+    </div>
 
-  <!-- ========== ABOUT SECTION ========== -->
+    <script>
+    function subscription(id) {
+        $.post('/subscription', {
+            id: id
+        }).done(function(response) {
+            if(response == 'success') {
+                if ($(this).text() == 'subscribe'){
+                    $(this).text('unsubscribe');
+                } else {
+                    $(this).text('subscribe');
+                };}
+        }).fail(function() {
+            $(this).text("FAILED");
+        });
+    }
+
+    function unsubscribe(id) {
+        $.post('/subscription', {
+            id: id
+        }).done(function(response) {
+            if(response == 'success') {
+                 $("#unsubscribe").text("subscribe");
+                 $("#unsubscribe").attr("onclick", "").click(function(){
+                     subscribe(id);
+            });}
+        }).fail(function() {
+            $("#unsubscribe").text("FAILED");
+        });
+    }
+</script>
+
+<!-- ========== ABOUT SECTION ========== -->
   <section id="about" name="about"></section>
   <div id="f">
     <div class="container">

@@ -1,23 +1,29 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from forms.forms import LoginForm, RegistrationForm
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from models.models import User
 from models.models import db
+from werkzeug.urls import url_parse
 
 
 # All views (routes) for the UI are registered with the app via a blueprint
 bp = Blueprint('routes', __name__, url_prefix='/')
 
 
-@bp.route('/refresh', methods=['GET', 'POST'])
-def refresh():
-    return render_template('refresh.html')
+@bp.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('home.html')
 
 
-@bp.route('/dynamic', methods=['GET', 'POST'])
-def dynamic():
-    ## subscribe user to API here
-    print(request.form['id'], request.form['subscribe'])
+@bp.route('/subscription', methods=['GET', 'POST'])
+@login_required
+def subscription():
+    subscription_id = int(request.form['id'])
+    if current_user.is_subscribed(subscription_id):
+        current_user.unsubscribe(subscription_id)
+    else:
+        current_user.subscribe(subscription_id)
+    print('True')
     return "success"
 
 
@@ -49,7 +55,10 @@ def login():
             return redirect(url_for('routes.login'))
         # Registers the user as logged in
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('routes.home'))
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('routes.home')
+        return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -57,11 +66,6 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('routes.home'))
-
-
-@bp.route('/', methods=['GET', 'POST'])
-def home():
-    return render_template('home.html')
 
 
 @bp.errorhandler(404)

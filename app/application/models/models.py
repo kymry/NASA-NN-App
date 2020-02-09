@@ -2,12 +2,12 @@ from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-from flask_login import LoginManager
+from flask_login import UserMixin, current_user, LoginManager
 
 
 # globally accessible variables
 login = LoginManager()
+login.login_view = 'login'
 mongodb = PyMongo()
 db = SQLAlchemy()
 migrate = Migrate()
@@ -21,10 +21,11 @@ def load_user(id):
 
 # db.Model is a base class for all models from Flask-SQLAlchemy
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    subscriptions = db.relationship('Subscription', backref='user', lazy=True)
 
     def __repr__(self):
         return 'Username: {}'.format(self.username)
@@ -34,6 +35,35 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def is_subscribed(self, api_id):
+        sub = Subscription.query.filter_by(user_id=current_user.id, subscription_id=api_id).first()
+        return True if sub else False
+
+    def subscribe(self, api_id):
+        sub = Subscription(user_id=current_user.id, subscription_id=api_id)
+        db.session.add(sub)
+        db.session.commit()
+
+    def unsubscribe(self, api_id):
+        sub = Subscription.query.filter_by(user_id=current_user.id, subscription_id=api_id).first()
+        db.session.delete(sub)
+        db.session.commit()
+
+
+class Subscription(db.Model):
+    """
+    Subscription ids:
+        1: Apod
+        2: Sol
+        3: Flare
+    """
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
+    subscription_id = db.Column(db.Integer, primary_key=True)
+
+
+    def __repr__(self):
+        return 'user {} is subscribed to api {}'.format(self.user_id, self.subscription)
 
 
 class Apod(db.Model):
@@ -71,3 +101,4 @@ class Flare(db.Model):
 
     def __repr__(self):
         return 'flare: {}'.format(self.id)
+
