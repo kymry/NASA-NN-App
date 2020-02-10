@@ -24,7 +24,7 @@ def subscription():
     else:
         current_user.subscribe(subscription_id)
     print('True')
-    return "success"
+    return "success", 200
 
 
 @bp.route('/register', methods=['GET', 'POST'])
