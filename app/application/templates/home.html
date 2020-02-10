@@ -18,60 +18,60 @@
   </div>
 
 <!-- ========== SUBSCRIPTION SECTION ========== -->
-    <div id="subscription_1">
-        <div class="container">
-          <div class="row">
-            <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
-                 {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
-                 <button id="unsub1" onclick="unsub(1)">unsubscribe</button>
-                 {%  else %}
-                 <button id="sub1" onclick="sub(1)">subscribe</button>
-                 {%  endif %}
-            </div>
+<div id="subscription_1">
+    <div class="container">
+      <div class="row">
+        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+             {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+             <button type="button" id="unsubscribe1" onclick="unsubscribe(1)" class="btn btn-dark">unsubscribe</button>
+             {%  else %}
+             <button type="button" id="subscribe1" onclick="subscribe(1)" class="btn btn-light">subscribe</button>
+             {%  endif %}
         </div>
     </div>
+</div>
 
-    <script>
-        function sub(id) {
-            $.ajax({
-                context: this,
-                type: 'POST',
-                url: '/subscription',
-                data: {id},
-                success: function(response) {
-
-                        if ($('#sub'+id).text() === 'subscribe') {
-                            $('#sub'+id).text('unsubscribe');
-                        } else {
-                            $('#sub'+id).text('subscribe');
-                        }
-
-                },
-                error: function () {
-                }
-            })
-        }
-
-           function unsub(id) {
-            $.ajax({
-                context: this,
-                type: 'POST',
-                url: '/subscription',
-                data: {id},
-                success: function(response) {
-
-                        if ($('#unsub'+id).text() === 'subscribe') {
-                            $('#unsub'+id).text('unsubscribe');
-                        } else {
-                            $('#unsub'+id).text('subscribe');
-                        }
-
-                },
-                error: function () {
-                }
-            })
-        }
-
+<script>
+    function subscribe(id) {
+        $.ajax({
+            context: this,
+            type: 'POST',
+            url: '/subscription',
+            data: {id},
+            success: function(response) {
+                var element = $('#subscribe' + id);
+                if (response === 'success') {
+                    if (element.text() === 'subscribe') {
+                        element.text('unsubscribe');
+                        element.removeClass("btn btn-light");
+                        element.addClass("btn btn-dark");
+                    } else {
+                        element.text('subscribe');
+                        element.removeClass("btn btn-dark");
+                        element.addClass("btn btn-light");
+            }}},
+            error: function () {
+    }})}
+   function unsubscribe(id) {
+    $.ajax({
+        context: this,
+        type: 'POST',
+        url: '/subscription',
+        data: {id},
+        success: function(response) {
+            var element = $('#unsubscribe' + id)
+                if (response === 'success') {
+                    if (element.text() === 'subscribe') {
+                        element.text('unsubscribe');
+                        element.removeClass("btn btn-light");
+                        element.addClass("btn btn-dark");
+                    } else {
+                        element.text('subscribe');
+                        element.removeClass("btn btn-dark");
+                        element.addClass("btn btn-light");
+            }}},
+        error: function () {}
+    })}
 </script>
 
 <!-- ========== ABOUT SECTION ========== -->
