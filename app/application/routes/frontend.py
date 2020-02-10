@@ -18,12 +18,12 @@ def home():
 @bp.route('/subscription', methods=['GET', 'POST'])
 @login_required
 def subscription():
+    print(request.form)
     subscription_id = int(request.form['id'])
     if current_user.is_subscribed(subscription_id):
         current_user.unsubscribe(subscription_id)
     else:
         current_user.subscribe(subscription_id)
-    print('True')
     return "success", 200
 
 
