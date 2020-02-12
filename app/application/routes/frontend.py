@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from forms.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from models.models import User
-from models.models import db
+from models.models import User, db
 from werkzeug.urls import url_parse
 
 
@@ -69,5 +68,11 @@ def logout():
 
 
 @bp.errorhandler(404)
-def page_not_found(e):
-    return "<h1>404</h1><p>The resource could not be found.</p>", 404
+def page_not_found_error(error):
+    return render_template('404.html'), 404
+
+
+@bp.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'), 500

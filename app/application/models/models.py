@@ -61,7 +61,6 @@ class Subscription(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
     subscription_id = db.Column(db.Integer, primary_key=True)
 
-
     def __repr__(self):
         return 'user {} is subscribed to api {}'.format(self.user_id, self.subscription)
 
