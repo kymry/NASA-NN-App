@@ -1,76 +1,66 @@
 {% extends "base.html" %}
 
+{%  block subscribe %}
 
-{%  block index %}
-<!-- ========== HEADER SECTION ========== -->
-  <section id="home" name="home"></section>
-  <div id="headerwrap">
-    <div class="container">
-      <br>
-      <div class="row">
-        <h1>Welcome to the End of the Line Club</h1>
-        <br>
-        <br>
-        <div class="col-lg-6 col-lg-offset-3">
-        </div>
-      </div>
-    </div>
-  </div>
+<!---- TITLE AND INTRO ---->
+<header>
+    <h1>Welcome to the End of the Line Club. </h1>
+    <p>A site that aggregates astronomical APIs from around the web and curates a customized daily email update.</p>
+</header>
 
-<!-- ========== SUBSCRIPTION SECTION ========== -->
-<div id="subscription_1">
-    <div class="container">
-      <div class="row">
-        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
+<!---- SUBSCRIPTIONS ---->
+<section>
+    <div class="box alt">
+    <div class="row gtr-uniform">
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
-             <button type="button" id="unsubscribe1" onclick="subscription(1, 'unsubscribe')" class="btn btn-dark">unsubscribe</button>
-             {%  else %}
-             <button type="button" id="subscribe1" onclick="subscription(1, 'subscribe')" class="btn btn-light">subscribe</button>
-             {%  endif %}
-        </div>
+            <button type="button" id="unsubscribe1" onclick="subscription(1, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe1" onclick="subscription(1, 'subscribe')" class="button fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
+        <div class="col-4"><span class="image fit">
+             {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+            <button type="button" id="unsubscribe2" onclick="subscription(2, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe2" onclick="subscription(2, 'subscribe')" class="button fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
+        <div class="col-4"><span class="image fit">
+             {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+            <button type="button" id="unsubscribe3" onclick="subscription(3, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe3" onclick="subscription(3, 'subscribe')" class="button fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
     </div>
-</div>
+    </div>
+</section>
 
+<!---- JAVASCRIPT ---->
 <script>
-
-function subscription(id, method) {
-        $.ajax({
-            type: 'POST',
-            url: '/subscription',
-            data: {id},
-            success: function(response) {
-                var element = $('#' + method + id);
-                if (response === 'success') {
-                    if (element.text() === 'subscribe') {
-                        element.text('unsubscribe');
-                        element.removeClass("btn btn-light");
-                        element.addClass("btn btn-dark");
-                    } else {
-                        element.text('subscribe');
-                        element.removeClass("btn btn-dark");
-                        element.addClass("btn btn-light");
-            }}},
-            error: function () {
-    }})}
+    function subscription(id, method) {
+            $.ajax({
+                type: 'POST',
+                url: '/subscription',
+                data: {id},
+                success: function(response) {
+                    var element = $('#' + method + id);
+                    if (response === 'success') {
+                        if (element.text() === 'subscribe') {
+                            element.text('unsubscribe');
+                            element.removeClass("btn btn-light");
+                            element.addClass("btn btn-dark");
+                        } else {
+                            element.text('subscribe');
+                            element.removeClass("btn btn-dark");
+                            element.addClass("btn btn-light");
+                }}},
+                error: function () {
+        }})}
 </script>
 
-<!-- ========== ABOUT SECTION ========== -->
-  <section id="about" name="about"></section>
-  <div id="f">
-    <div class="container">
-      <div class="row">
-        <h3>ABOUT</h3>
-        <p class="centered"><i class="icon icon-circle"></i><i class="icon icon-circle"></i><i class="icon icon-circle"></i></p>
-
-        <div class="col-lg-6 col-lg-offset-3">
-          <p>Hello and welcome! This web app is a work in progress that will have two main functions. </p>
-          <p>(i) Allow users to upload unlabeled images of planets in our solar system, send the image through a trained CNN,
-          and predict which planet it is.</p>
-          <p>(ii) Aggregate data and images from various NASA and other astronomical APIs and allow users to create
-              accounts and subscribe to the APIs of their choosing. Once subscribed, a daily email with the newest
-              data from the user's subscriptions will be sent to their inbox in a nicely formatted summary email.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 {% endblock %}

@@ -1,76 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Planet Prediction</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Outerplanet System</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../static/theme/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../static/theme/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="../static/theme/images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+								</a>
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+						</div>
+					</header>
+				<!-- SIDE MENU -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="{{ url_for('routes.home') }}">Home</a></li>
+							<li><a href="{{ url_for('routes.home') }}">About</a></li>
+                            {% if current_user.is_anonymous %}
+							<li><a href="{{ url_for('routes.login') }}">Login</a></li>
+							<li><a href="{{ url_for('routes.register') }}">Register</a></li>
+                             {% else %}
+							<li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
+                            {% endif %}
+						</ul>
+					</nav>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Oswald:400,300,700|EB+Garamond" rel="stylesheet">
-  <!-- Bootstrap CSS File -->
-  <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Libraries CSS Files -->
-  <link href="../static/theme/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <!-- Main Stylesheet File -->
-  <link href="../static/theme/css/style.css" rel="stylesheet">
+            <div id="main">
+                <div class="inner">
+              <!-- ========== SUBSCRIBE SECTION ========== -->
+              {%  block subscribe %}{% endblock %}
 
-</head>
+              <!-- ========== HEADER and ABOUT SECTION ========== -->
+              {%  block index %}{% endblock %}
 
-<body data-spy="scroll" data-offset="0" data-target="#theMenu">
+               <!-- ========== LOGIN SECTION ========== -->
+              {%  block login %}{% endblock %}
 
-  <!-- Menu -->
-  <nav class="menu" id="theMenu">
-    <div class="menu-wrap">
-      <h1 class="logo"><a href="home.html#home">Menu</a></h1>
-      <i class="fa fa-times-circle menu-close"></i>
+              <!-- ========== USER REGISTRATION SECTION ========== -->
+              {%  block register %}{% endblock %}
+                </div>
+            </div>
 
-      <!--- home link --->
-      <a href="{{ url_for('routes.home') }}">Home</a>
-      <!--- about link --->
-      <a href="{{ url_for('routes.home') }}">About</a>
-      <!--- login and logout links --->
-        {% if current_user.is_anonymous %}
-      <a href="{{ url_for('routes.login') }}">Login</a>
-      <a href="{{ url_for('routes.register') }}">Register</a>
-        {% else %}
-      <a href="{{ url_for('routes.logout') }}">Logout</a>
-        {% endif %}
-    </div>
-    <!-- Menu button -->
-    <div id="menuToggle"><i class="fa fa-bars"></i></div>
-  </nav>
+				<!-- FOOTER -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>About</h2>
+							</section>
+                                <p>Hello and welcome! This web app is a work in progress that will have two main functions. </p>
+                                <p>(i) Allow users to upload unlabeled images of planets in our solar system, send the image through a trained CNN,
+                                and predict which planet it is.</p>
+                                <p>(ii) Aggregate data and images from various NASA and other astronomical APIs and allow users to create
+                                accounts and subscribe to the APIs of their choosing. Once subscribed, a daily email with the newest
+                                data from the user's subscriptions will be sent to their inbox in a nicely formatted summary email.</p>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
 
-   <!-- ========== SUBSCRIBE SECTION ========== -->
-  {%  block subscribe %}{% endblock %}
+		<!-- SCRIPTS -->
+			<script src="../static/theme/assets/js/jquery.min.js"></script>
+			<script src="../static/theme/assets/js/browser.min.js"></script>
+			<script src="../static/theme/assets/js/breakpoints.min.js"></script>
+			<script src="../static/theme/assets/js/util.js"></script>
+			<script src="../static/theme/assets/js/main.js"></script>
 
-  <!-- ========== HEADER and ABOUT SECTION ========== -->
-  {%  block index %}{% endblock %}
-
-   <!-- ========== LOGIN SECTION ========== -->
-  {%  block login %}{% endblock %}
-
-  <!-- ========== USER REGISTRATION SECTION ========== -->
-  {%  block register %}{% endblock %}
-
-  <!-- ========== CONTACT SECTION ========== -->
-  <section id="contact" name="contact"></section>
-  <div id="f">
-    <div class="container">
-      <div class="row">
-      </div>
-    </div>
-  </div>
-
-  <!-- JavaScript Libraries -->
-  <script src="../static/theme/lib/jquery/jquery.min.js"></script>
-  <script src="../static/theme/lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="../static/theme/lib/php-mail-form/validate.js"></script>
-  <script src="../static/theme/lib/easing/easing.min.js"></script>
-
-  <!-- Template Main Javascript File -->
-  <script src="../static/theme/js/main.js"></script>
-
-</body>
+	</body>
 </html>
