@@ -1,4 +1,4 @@
-## 惑星・Wakusei - Astronomy API aggregation
+## 惑星・Wakusei - Astronomy API aggregation web application
 
 A work in progress.
 
