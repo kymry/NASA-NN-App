@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{%  block subscribe %}
+{%  block content %}
 
 <!---- TITLE AND INTRO ---->
 <header>
-    <h1>Welcome to the End of the Line Club. </h1>
+    <h3>Welcome to the End of the Line Club. </h3>
     <p>A site that aggregates astronomical APIs from around the web and curates a customized daily email update.</p>
 </header>
 
@@ -19,21 +19,21 @@
              {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
             <button type="button" id="unsubscribe1" onclick="subscription(1, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe1" onclick="subscription(1, 'subscribe')" class="button fit small">subscribe</button>
+            <button type="button" id="subscribe1" onclick="subscription(1, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
         <div class="col-4"><span class="image fit">
-             {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+             {% if not current_user.is_anonymous and current_user.is_subscribed(2) %}
             <button type="button" id="unsubscribe2" onclick="subscription(2, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe2" onclick="subscription(2, 'subscribe')" class="button fit small">subscribe</button>
+            <button type="button" id="subscribe2" onclick="subscription(2, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
         <div class="col-4"><span class="image fit">
-             {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
+             {% if not current_user.is_anonymous and current_user.is_subscribed(3) %}
             <button type="button" id="unsubscribe3" onclick="subscription(3, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe3" onclick="subscription(3, 'subscribe')" class="button fit small">subscribe</button>
+            <button type="button" id="subscribe3" onclick="subscription(3, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
     </div>
@@ -52,12 +52,12 @@
                     if (response === 'success') {
                         if (element.text() === 'subscribe') {
                             element.text('unsubscribe');
-                            element.removeClass("btn btn-light");
-                            element.addClass("btn btn-dark");
+                            element.removeClass("button primary fit small");
+                            element.addClass("button fit small");
                         } else {
                             element.text('subscribe');
-                            element.removeClass("btn btn-dark");
-                            element.addClass("btn btn-light");
+                            element.removeClass("button fit small");
+                            element.addClass("button primary fit small");
                 }}},
                 error: function () {
         }})}

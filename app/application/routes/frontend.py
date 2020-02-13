@@ -14,12 +14,20 @@ def home():
     return render_template('home.html')
 
 
+@bp.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
+
+
 @bp.route('/subscription', methods=['GET', 'POST'])
 @login_required
 def subscription():
-    print(request.form)
     subscription_id = int(request.form['id'])
-    if current_user.is_subscribed(subscription_id):
+    if current_user.is_anonymous:
+        return "failure", 500
+    elif current_user.is_subscribed(subscription_id):
         current_user.unsubscribe(subscription_id)
     else:
         current_user.subscribe(subscription_id)

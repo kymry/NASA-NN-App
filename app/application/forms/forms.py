@@ -28,4 +28,4 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(
-                  'Email: {} is already in use. Please login or use a different email address.'.format(email))
+                  'This email is already in use. Please login or use a different email address.')
