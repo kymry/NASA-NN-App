@@ -1,12 +1,11 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
 from logging.handlers import RotatingFileHandler
-from config import Config
-from external_apis import external_apis as ep
-from routes import frontend
+from .config import Config
+from .external_apis import external_apis as ep
+from .routes import frontend
 import os
 import logging
-import datetime
 
 
 def create_app():
@@ -15,15 +14,14 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    from models.models import db, mongodb, migrate, login
-
     # Initialize plugins with the app object
+    from .models.models import db, mongodb, migrate, login
     mongodb.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
 
-    # within this block, current_app points to app
+    # within this block, flask's current_app object points to app
     with app.app_context():
         register_blueprints(app)
         register_shell_context_variables(app, db, mongodb)

@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user, LoginManager
+import collections
 
-
-# globally accessible variables
+# globally accessible variables - instantiated in this module to avoid circular imports
 login = LoginManager()
 login.login_view = 'login'
 mongodb = PyMongo()
@@ -50,6 +50,9 @@ class User(UserMixin, db.Model):
         db.session.delete(sub)
         db.session.commit()
 
+    def get_subscriptions(self):
+        raw_subs = Subscription.query.filter_by(user_id=current_user.id).all()
+        return [SubscriptionDetails.query.filter_by(id=x.subscription_id).first().name for x in raw_subs]
 
 class Subscription(db.Model):
     """
@@ -62,11 +65,18 @@ class Subscription(db.Model):
     subscription_id = db.Column(db.Integer, primary_key=True)
 
     def __repr__(self):
-        return 'user {} is subscribed to api {}'.format(self.user_id, self.subscription)
+        return 'user {} is subscribed to api {}'.format(self.user_id, self.subscription_id)
+
+
+class SubscriptionDetails(db.Model):
+    id = db.Column(db.Integer, db.ForeignKey(Subscription.subscription_id), primary_key=True)
+    name = db.Column(db.String)
+
+    def __repr__(self):
+        return 'Subscription id {} is named {}'.format(self.id, self.name)
 
 
 class Apod(db.Model):
-    """ Astronomy Picture of the Day (APOD) """
     date = db.Column(db.String, primary_key=True)
     explanation = db.Column(db.String)
     media_type = db.Column(db.String)

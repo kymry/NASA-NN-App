@@ -4,7 +4,7 @@
 
 <!---- TITLE AND INTRO ---->
 <header>
-    <h3>Welcome to the End of the Line Club. </h3>
+    <h3>Welcome to Wakusei. </h3>
     <p>A site that aggregates astronomical APIs from around the web and curates a customized daily email update.</p>
 </header>
 
@@ -12,7 +12,7 @@
 <section>
     <div class="box alt">
     <div class="row gtr-uniform">
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/g20.png" alt="" /></span></div>
         <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
         <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
         <div class="col-4"><span class="image fit">
@@ -34,6 +34,31 @@
             <button type="button" id="unsubscribe3" onclick="subscription(3, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
             <button type="button" id="subscribe3" onclick="subscription(3, 'subscribe')" class="button primary fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
+        <div class="col-12"><span class="image fit"></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div class="col-4"><span class="image fit">
+             {% if not current_user.is_anonymous and current_user.is_subscribed(4) %}
+            <button type="button" id="unsubscribe3" onclick="subscription(4, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe3" onclick="subscription(4, 'subscribe')" class="button primary fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
+            <div class="col-4"><span class="image fit">
+             {% if not current_user.is_anonymous and current_user.is_subscribed(5) %}
+            <button type="button" id="unsubscribe3" onclick="subscription(5, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe3" onclick="subscription(5, 'subscribe')" class="button primary fit small">subscribe</button>
+            {%  endif %}
+        </span></div>
+            <div class="col-4"><span class="image fit">
+             {% if not current_user.is_anonymous and current_user.is_subscribed(6) %}
+            <button type="button" id="unsubscribe3" onclick="subscription(6, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            {%  else %}
+            <button type="button" id="subscribe3" onclick="subscription(6, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
     </div>

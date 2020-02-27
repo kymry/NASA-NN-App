@@ -1,11 +1,10 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from forms.forms import LoginForm, RegistrationForm
+from ..forms.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from models.models import User, db
+from ..models.models import User, db
 from werkzeug.urls import url_parse
 
 
-# All views (routes) for the UI are registered with the app via a blueprint
 bp = Blueprint('routes', __name__, url_prefix='/')
 
 
@@ -18,7 +17,8 @@ def home():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    subscriptions = current_user.get_subscriptions()
+    return render_template('user.html', user=user, subscriptions=subscriptions)
 
 
 @bp.route('/subscription', methods=['GET', 'POST'])
@@ -84,3 +84,13 @@ def page_not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('500.html'), 500
+
+
+@bp.route('/external/<domain>', methods=['GET'])
+def external(domain):
+    if domain == 'github':
+        return redirect('https://github.com/kymry')
+    elif domain == 'linkedin':
+        return redirect('https://www.linkedin.com/in/kymryburwell/')
+    else:
+        redirect(url_for('routes.home'))

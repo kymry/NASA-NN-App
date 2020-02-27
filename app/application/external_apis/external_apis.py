@@ -20,7 +20,7 @@ import os
 from collections import OrderedDict
 import datetime
 from dateutil import parser
-from models.models import Apod, Flare, Sol
+from ..models.models import Apod, Flare, Sol
 
 
 API_KEY = "nnbXgYgvAzynrP8e3KVd9WgPsfIl0eHweH2ZQSsu"
