@@ -4,18 +4,40 @@
 
 <!---- TITLE AND INTRO ---->
 <header>
-    <h3>Welcome to Wakusei. </h3>
-    <p>A site that aggregates astronomical APIs from around the web and curates a customized daily email update.</p>
+    <h3>Welcome</h3>
+    <p>This site aggregates astronomical APIs from around the web and curates a customized daily email update for you.</p>
 </header>
 
 <!---- SUBSCRIPTIONS ---->
 <section>
     <div class="box alt">
     <div class="row gtr-uniform">
-        <div class="col-4"><span class="image fit"><img src="../static/images/g20.png" alt="" /></span></div>
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
-        <div class="col-4"><span class="image fit">
+    <section class="tiles">
+        <article>
+            <span class="image"><img src="../static/images/planet_1.png" alt="" /></span>
+            <a><h2>Astronomy Picture of the Day</h2>
+            <div class="content">
+                <p>test description</p>
+            </div></a>
+        </article>
+            <article>
+            <span class="image"><img src="../static/images/planet_2.png" alt="" /></span>
+            <a><h2>Solar Flares</h2>
+            <div class="content">
+                <p>test description</p>
+            </div></a>
+        </article>
+            <article>
+            <span class="image"><img src="../static/images/planet_3.png" alt="" /></span>
+            <a><h2>Mar's Weather</h2>
+            <div class="content">
+                <p>test description</p>
+            </div></a>
+        </article>
+    </section>
+       <!-- <div class="col-4"><span class="image fit"><img src="../static/images/planet_3.png" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_4.png" alt="" /></span></div>
+        --><div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
             <button type="button" id="unsubscribe1" onclick="subscription(1, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
@@ -36,10 +58,12 @@
             <button type="button" id="subscribe3" onclick="subscription(3, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
-        <div class="col-12"><span class="image fit"></span></div>
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
-        <div class="col-4"><span class="image fit"><img src="../static/theme/images/pic03.jpg" alt="" /></span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error1"></span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error2"></span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error3"></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_6.png" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_5.png" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_2.png" alt="" /></span></div>
         <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(4) %}
             <button type="button" id="unsubscribe3" onclick="subscription(4, 'unsubscribe')" class="button fit small">unsubscribe</button>
@@ -61,6 +85,10 @@
             <button type="button" id="subscribe3" onclick="subscription(6, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error4"></span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error5"></span></div>
+        <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error6"></span></div>
+
     </div>
     </div>
 </section>
@@ -85,6 +113,7 @@
                             element.addClass("button primary fit small");
                 }}},
                 error: function () {
+                    $('#' + 'error' + id).html("You must login first");
         }})}
 </script>
 
