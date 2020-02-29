@@ -2,7 +2,27 @@
 
 {%  block content %}
 
-    <p>
-    </p>
+<section>
+    <h3>Manage Subscriptions</h3>
+    <div class="table-wrapper">
+        <table>
+            <tbody>
+            {%  for subscription in all_subscriptions %}
+                <tr>
+                    <td>
+                        {{ subscription.name }}
+                    </td>
+                    <td>
+                        <input type="radio" id="{{ "sub-" + subscription.id + "-on" }}" name="{{ subscription.id }}" checked>
+                            <label for="{{ "sub-" + subscription.id + "-on" }}">Subscribed</label>
+                        <input type="radio" id="{{ "sub-" + subscription.id + "-off" }}" name="{{ subscription.id }}" >
+                            <label for="{{ "sub-" + subscription.id + "-off" }}">Unsubscribed</label>
+                    </td>
+                </tr>
+            {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 
 {% endblock %}

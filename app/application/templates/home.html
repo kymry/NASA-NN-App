@@ -12,32 +12,10 @@
 <section>
     <div class="box alt">
     <div class="row gtr-uniform">
-    <section class="tiles">
-        <article>
-            <span class="image"><img src="../static/images/planet_1.png" alt="" /></span>
-            <a><h2>Astronomy Picture of the Day</h2>
-            <div class="content">
-                <p>test description</p>
-            </div></a>
-        </article>
-            <article>
-            <span class="image"><img src="../static/images/planet_2.png" alt="" /></span>
-            <a><h2>Solar Flares</h2>
-            <div class="content">
-                <p>test description</p>
-            </div></a>
-        </article>
-            <article>
-            <span class="image"><img src="../static/images/planet_3.png" alt="" /></span>
-            <a><h2>Mar's Weather</h2>
-            <div class="content">
-                <p>test description</p>
-            </div></a>
-        </article>
-    </section>
-       <!-- <div class="col-4"><span class="image fit"><img src="../static/images/planet_3.png" alt="" /></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_1.png" alt=""></span></div>
+        <div class="col-4"><span class="image fit"><img src="../static/images/planet_3.png" alt="" /></span></div>
         <div class="col-4"><span class="image fit"><img src="../static/images/planet_4.png" alt="" /></span></div>
-        --><div class="col-4"><span class="image fit">
+        <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(1) %}
             <button type="button" id="unsubscribe1" onclick="subscription(1, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
@@ -66,23 +44,23 @@
         <div class="col-4"><span class="image fit"><img src="../static/images/planet_2.png" alt="" /></span></div>
         <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(4) %}
-            <button type="button" id="unsubscribe3" onclick="subscription(4, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            <button type="button" id="unsubscribe4" onclick="subscription(4, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe3" onclick="subscription(4, 'subscribe')" class="button primary fit small">subscribe</button>
+            <button type="button" id="subscribe4" onclick="subscription(4, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
             <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(5) %}
-            <button type="button" id="unsubscribe3" onclick="subscription(5, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            <button type="button" id="unsubscribe5" onclick="subscription(5, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe3" onclick="subscription(5, 'subscribe')" class="button primary fit small">subscribe</button>
+            <button type="button" id="subscribe5" onclick="subscription(5, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
             <div class="col-4"><span class="image fit">
              {% if not current_user.is_anonymous and current_user.is_subscribed(6) %}
-            <button type="button" id="unsubscribe3" onclick="subscription(6, 'unsubscribe')" class="button fit small">unsubscribe</button>
+            <button type="button" id="unsubscribe6" onclick="subscription(6, 'unsubscribe')" class="button fit small">unsubscribe</button>
             {%  else %}
-            <button type="button" id="subscribe3" onclick="subscription(6, 'subscribe')" class="button primary fit small">subscribe</button>
+            <button type="button" id="subscribe6" onclick="subscription(6, 'subscribe')" class="button primary fit small">subscribe</button>
             {%  endif %}
         </span></div>
         <div style="text-align: center;" class="col-4"><span style="color:blue; display:inline-block;" class="" id="error4"></span></div>

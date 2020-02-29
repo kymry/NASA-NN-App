@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from ..forms.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from ..models.models import User, db
+from ..models.models import User, db, SubscriptionDetails
 from werkzeug.urls import url_parse
 
 
@@ -17,8 +17,11 @@ def home():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    subscriptions = current_user.get_subscriptions()
-    return render_template('user.html', user=user, subscriptions=subscriptions)
+    all_subscriptions = SubscriptionDetails.get_all_subscriptions()
+    user_subscriptions = current_user.get_subscriptions()
+    return render_template('user.html', user=user,
+                                        user_subscriptions=user_subscriptions,
+                                        all_subscriptions=all_subscriptions)
 
 
 @bp.route('/subscription', methods=['GET', 'POST'])

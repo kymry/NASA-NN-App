@@ -54,6 +54,7 @@ class User(UserMixin, db.Model):
         raw_subs = Subscription.query.filter_by(user_id=current_user.id).all()
         return [SubscriptionDetails.query.filter_by(id=x.subscription_id).first().name for x in raw_subs]
 
+
 class Subscription(db.Model):
     """
     Subscription ids:
@@ -71,6 +72,11 @@ class Subscription(db.Model):
 class SubscriptionDetails(db.Model):
     id = db.Column(db.Integer, db.ForeignKey(Subscription.subscription_id), primary_key=True)
     name = db.Column(db.String)
+
+    @classmethod
+    def get_all_subscriptions(cls):
+        live_subscriptions = db.session.query(SubscriptionDetails).all()
+        return [{'id': str(sub.id), 'name': sub.name} for sub in live_subscriptions]
 
     def __repr__(self):
         return 'Subscription id {} is named {}'.format(self.id, self.name)
