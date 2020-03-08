@@ -47,7 +47,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Woohoo! You can now subscribe to astronomical APIs until your seeing aliens!')
+        flash('Woohoo! You can now subscribe to astronomical APIs until you\'re seeing aliens!')
         return redirect(url_for('routes.login'))
     return render_template('register.html', title='Register', form=form)
 

@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user, LoginManager
-import collections
 
 # globally accessible variables - instantiated in this module to avoid circular imports
 login = LoginManager()
